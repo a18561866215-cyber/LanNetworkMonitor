@@ -10,7 +10,7 @@ namespace ExplorerTreemap
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            using (var context = new CompanionContext())
+            using (var context = new CompanionContextV3())
                 Application.Run(context);
         }
     }
