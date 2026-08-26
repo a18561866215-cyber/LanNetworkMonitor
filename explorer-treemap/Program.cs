@@ -11,7 +11,7 @@ namespace ExplorerTreemap
             DpiBootstrap.EnablePerMonitorV2();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            using (var context = new CompanionContextV4())
+            using (var context = new CompanionContextV5())
                 Application.Run(context);
         }
     }
