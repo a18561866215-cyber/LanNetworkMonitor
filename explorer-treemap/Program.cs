@@ -8,9 +8,10 @@ namespace ExplorerTreemap
         [STAThread]
         private static void Main()
         {
+            DpiBootstrap.EnablePerMonitorV2();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            using (var context = new CompanionContextV3())
+            using (var context = new CompanionContextV4())
                 Application.Run(context);
         }
     }
