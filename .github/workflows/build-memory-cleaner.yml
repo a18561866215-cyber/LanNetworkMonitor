@@ -1,9 +1,9 @@
-name: Build Memory Cleaner Windows EXE
+name: Build Memory Cleaner V0.2 Windows EXE
 
 on:
   workflow_dispatch:
   push:
-    branches: [ "memory-cleaner-v0.1" ]
+    branches: [ "memory-cleaner-v0.2" ]
     paths:
       - "memory-cleaner/**"
       - ".github/workflows/build-memory-cleaner.yml"
@@ -18,25 +18,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up .NET 8
+      - name: Set up .NET SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore
-        run: dotnet restore memory-cleaner/MemoryCleaner.csproj
+      - name: Build compact .NET Framework 4.8 EXE
+        run: dotnet build memory-cleaner/MemoryCleaner.csproj -c Release -f net48
 
-      - name: Publish self-contained single EXE
-        run: dotnet publish memory-cleaner/MemoryCleaner.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -o out
-
-      - name: Rename EXE
+      - name: Collect EXE
         shell: pwsh
         run: |
-          Copy-Item "out/MemoryCleaner.exe" "out/BackgroundProcessCleaner-v0.1.exe"
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          Copy-Item "memory-cleaner/bin/Release/net48/MemoryCleaner.exe" "out/BackgroundProcessCleaner-v0.2.exe"
+          Get-Item "out/BackgroundProcessCleaner-v0.2.exe" | Select-Object Name,Length
 
       - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BackgroundProcessCleaner-v0.1-Windows
-          path: out/BackgroundProcessCleaner-v0.1.exe
+          name: BackgroundProcessCleaner-v0.2-Windows
+          path: out/BackgroundProcessCleaner-v0.2.exe
           if-no-files-found: error
