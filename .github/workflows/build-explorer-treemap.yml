@@ -1,9 +1,9 @@
-name: Build Explorer Treemap V0.2 Windows EXE
+name: Build Explorer Treemap V0.3 Windows EXE
 
 on:
   workflow_dispatch:
   push:
-    branches: [ "disk-treemap-v0.2" ]
+    branches: [ "disk-treemap-v0.3" ]
     paths:
       - "explorer-treemap/**"
       - ".github/workflows/build-explorer-treemap.yml"
@@ -30,11 +30,11 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path out | Out-Null
-          Copy-Item "explorer-treemap/bin/Release/net48/ExplorerTreemap.exe" "out/ExplorerTreemap-v0.2.exe"
+          Copy-Item "explorer-treemap/bin/Release/net48/ExplorerTreemap.exe" "out/ExplorerTreemap-v0.3.exe"
 
       - name: Upload EXE artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ExplorerTreemap-v0.2-Windows
-          path: out/ExplorerTreemap-v0.2.exe
+          name: ExplorerTreemap-v0.3-Windows
+          path: out/ExplorerTreemap-v0.3.exe
           if-no-files-found: error
