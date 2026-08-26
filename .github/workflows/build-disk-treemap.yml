@@ -1,0 +1,35 @@
+name: Build Disk Treemap Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "disk-treemap-v0.1" ]
+    paths:
+      - "disk-treemap/**"
+      - ".github/workflows/build-disk-treemap.yml"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Build compact .NET Framework 4.8 EXE
+        run: dotnet build disk-treemap/DiskTreemap.csproj -c Release
+      - name: Collect EXE
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          Copy-Item "disk-treemap/bin/Release/net48/DiskTreemap.exe" "out/DiskSpaceTreemap-v0.1.exe"
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DiskSpaceTreemap-v0.1-Windows
+          path: out/DiskSpaceTreemap-v0.1.exe
+          if-no-files-found: error
