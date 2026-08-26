@@ -1,0 +1,54 @@
+name: Build Marquee Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "marquee-v0.1" ]
+    paths:
+      - "marquee-app/**"
+      - ".github/workflows/build-marquee-apk.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;35.0.0" "platform-tools"
+
+      - name: Set up Gradle 8.13
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+
+      - name: Build debug APK
+        working-directory: marquee-app
+        run: gradle assembleDebug --stacktrace
+
+      - name: Rename APK
+        run: |
+          mkdir -p out
+          cp marquee-app/app/build/outputs/apk/debug/app-debug.apk out/MarqueeBoard-v0.1-debug.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MarqueeBoard-v0.1-APK
+          path: out/MarqueeBoard-v0.1-debug.apk
+          if-no-files-found: error
