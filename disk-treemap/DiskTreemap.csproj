@@ -8,5 +8,10 @@
     <AssemblyName>DiskTreemap</AssemblyName>
     <RootNamespace>DiskTreemap</RootNamespace>
     <Version>0.1.0</Version>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="App.cs" />
+  </ItemGroup>
 </Project>
