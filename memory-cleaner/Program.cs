@@ -1,14 +1,16 @@
 using System;
 using System.Windows.Forms;
 
-namespace MemoryCleaner;
-
-internal static class Program
+namespace MemoryCleaner
 {
-    [STAThread]
-    static void Main()
+    internal static class Program
     {
-        ApplicationConfiguration.Initialize();
-        Application.Run(new MainForm());
+        [STAThread]
+        private static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new MainForm());
+        }
     }
 }
