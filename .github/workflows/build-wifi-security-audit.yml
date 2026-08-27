@@ -1,0 +1,40 @@
+name: Build Wi-Fi Security Audit V0.1
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "wifi-security-audit-v0.1" ]
+    paths:
+      - "wifi-security-audit/**"
+      - ".github/workflows/build-wifi-security-audit.yml"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build compact .NET Framework 4.8 EXE
+        run: dotnet build wifi-security-audit/WifiSecurityAudit.csproj -c Release
+
+      - name: Collect EXE
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          Copy-Item "wifi-security-audit/bin/Release/net48/WifiSecurityAudit.exe" "out/WifiSecurityAudit-v0.1.exe"
+
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WifiSecurityAudit-v0.1-Windows
+          path: out/WifiSecurityAudit-v0.1.exe
+          if-no-files-found: error
