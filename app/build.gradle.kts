@@ -3,14 +3,29 @@ plugins {
 }
 
 android {
-    namespace = "com.lan.networkmonitor"
+    namespace = "com.arashi.lunwu"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.lan.networkmonitor"
-        minSdk = 29
+        applicationId = "com.arashi.lunwu"
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
     }
+
+    buildFeatures {
+        aidl = true
+        buildConfig = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation("dev.rikka.shizuku:api:13.1.5")
+    implementation("dev.rikka.shizuku:provider:13.1.5")
 }
