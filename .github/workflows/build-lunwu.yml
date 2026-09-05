@@ -21,6 +21,11 @@ jobs:
           base64 -d app_icon.b64 > app/src/main/res/drawable-nodpi/app_icon.jpg
           file app/src/main/res/drawable-nodpi/app_icon.jpg
 
+      - name: Apply compatibility fixes
+        run: |
+          sed -i 's/Shizuku.addBinderReceivedListener(binderReceived, true);/Shizuku.addBinderReceivedListener(binderReceived);/' app/src/main/java/com/arashi/lunwu/MainActivity.java
+          sed -i 's/int user = UserHandle.getUserHandleForUid(android.os.Process.myUid()).getIdentifier();/String user = "current";/' app/src/main/java/com/arashi/lunwu/MainActivity.java
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
